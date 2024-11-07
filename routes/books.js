@@ -98,12 +98,14 @@ router.get(
 /* GET individual Book. */
 router.get(
   "/:id",
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req, res, next) => {
     const book = await Book.findByPk(req.params.id);
     if (book) {
       res.render("books/show", { book, title: book.title });
     } else {
-      res.sendStatus(404);
+      const error = new Error("Book not found");
+      error.status = 404;
+      next(error); // Pass the error to the global
     }
   }),
 );

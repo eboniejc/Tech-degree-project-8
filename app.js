@@ -28,17 +28,22 @@ app.use("/books", booksRouter);
 app.use((req, res, next) => {
   const err = new Error("Sorry, page not found");
   err.status = 404;
-  console.error(`Status: ${err.status}, Message: ${err.message}`); // Log 404 error
-  res.render("page-not-found", { title: "Page Not Found", error: err });
+  next(err); // Pass error to the global error handler
 });
 
-// Error handler
+// Global error handler
 app.use((err, req, res, next) => {
-  err.status = err.status || 500; // Default to 500
+  err.status = err.status || 500; // Set default to 500
   err.message = err.message || "We goofed!";
   console.error(`Status: ${err.status}, Message: ${err.message}`); // Log the error
-  res.status(err.status);
-  res.render("error", { title: "Error", error: err });
+  // Templates based on error status
+  if (err.status === 404) {
+    res
+      .status(404)
+      .render("page-not-found", { title: "Page Not Found", error: err });
+  } else {
+    res.status(err.status).render("error", { title: "Error", error: err });
+  }
 });
 
 //IIFE Sync and authentication
