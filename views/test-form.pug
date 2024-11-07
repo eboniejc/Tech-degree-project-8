@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Test Form
+  body
+    h1 Test Form with Errors
+    if errors
+      h2.error Oooops!
+      ul.error
+        each error in errors
+          li= error
+    form(action="/books" method="post")
+      label(for="title") Title
+      input(type="text" name="title")
+      label(for="author") Author
+      input(type="text" name="author")
+      input(type="submit" value="Submit")

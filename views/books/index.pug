@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  h1 Books
+ 
+  form(action="/books" method="get")
+    input(type="text" name="search" placeholder="Search books..." value=(search || ''))
+    button(type="submit") Search
+
+  p
+    a.button(href="/books/new") Create New Book &#43;
+
+  table
+    thead
+      tr
+        th Title
+        th Author
+        th Genre
+        th Year
+    tbody
+      each book in books
+        tr
+          td
+            a(href="/books/" + book.id) #{book.title}
+          td= book.author
+          td= book.genre
+          td= book.year
+        
+  if totalPages > 1
+    nav.pagination
+      if page > 1
+        a(href=`/books?page=${page - 1}&search=${search || ''}`) Previous
+
+      each num in [...Array(totalPages).keys()].map(n => n + 1)
+        if num === page
+          span.page-number.current= num
+        else
+          a.page-number(href=`/books?page=${num}&search=${search || ''}`)= num
+
+      if page < totalPages
+        a(href=`/books?page=${page + 1}&search=${search || ''}`) Next

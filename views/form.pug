@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  h1 #{isEditing ? "Edit Book" : "New Book"}
+
+  if errors
+    h2.error Oooops!
+    ul.error
+      each error in errors
+        li= error
+
+  form(action=isEditing ? `/books/${book.id}/edit` : "/books" method="post")
+    p
+      label(for="title") Title
+      input(type="text" name="title" id="title" value=book.title)
+
+    p
+      label(for="author") Author
+      input(type="text" name="author" id="author" value=book.author)
+
+    p
+      label(for="genre") Genre
+      input(type="text" name="genre" id="genre" value=book.genre)
+
+    p
+      label(for="year") Year
+      input(type="text" name="year" id="year" value=book.year)
+
+    p
+      input(type="submit" value=isEditing ? "Update Book" : "Create New Book")
+    
+    p
+      a.button(href="/books") Cancel
+    
+    if isEditing
+      p
+        a.button.delete-button(href=`/books/${book.id}/delete`) Delete Book

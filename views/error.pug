@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title= error.status + ' - ' + error.message
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    h1= error.message
+    h2= error.status
+    p Sorry, something went wrong.
